@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Mowing, watering, feeding and overseeding a Kentucky bluegrass lawn in the Salt Lake Valley, built from USU Extension fact sheets with every claim sourced.">
+<meta name="description" content="Mowing, watering, feeding and overseeding a Kentucky bluegrass lawn in the Salt Lake Valley, built from USU Extension fact sheets with every claim sourced, plus Rachio controller setup.">
 <meta name="theme-color" content="#EAECE4" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#111713" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="article">
@@ -120,6 +120,9 @@ a.src:hover{color:var(--sage);border-bottom-color:var(--sage)}
 a.src-a:hover{color:var(--sun);border-bottom-color:var(--sun)}
 .src-c{color:var(--alarm);border-bottom-style:solid;border-bottom-color:var(--alarm);background:var(--alarm-soft);border-radius:2px}
 a.src-c:hover{color:var(--alarm);border-bottom-color:var(--alarm)}
+/* product-tier source: outranked by extension, flagged so you can see it is the vendor talking */
+.src-p{color:var(--cobalt);border-bottom-style:dashed;border-bottom-color:var(--cobalt);background:var(--cobalt-soft);border-radius:2px}
+a.src-p:hover{color:var(--cobalt);border-bottom-color:var(--cobalt)}
 .prov-key{display:grid;gap:.55rem;font-size:var(--fs-sm);line-height:1.5;color:var(--ink-2)}
 .prov-key div{display:grid;grid-template-columns:auto 1fr;gap:.6rem;align-items:baseline}
 
@@ -455,34 +458,34 @@ html{scroll-behavior:smooth}
     <div class="calc-in">
       <div class="field">
         <label for="sqft">Turf area, sq ft</label>
-        <input id="sqft" type="number" inputmode="numeric" min="100" max="200000" step="100" value="5000" aria-describedby="sqftHelp">
+        <input id="sqft" type="number" inputmode="numeric" min="100" max="200000" step="100" value="8100" aria-describedby="sqftHelp">
       </div>
       <div class="calc-btns" role="group" aria-label="Common lawn sizes">
         <button class="pill" type="button" data-sqft="2500">2,500</button>
         <button class="pill" type="button" data-sqft="5000">5,000</button>
-        <button class="pill" type="button" data-sqft="8000">8,000</button>
+        <button class="pill" type="button" data-sqft="8100">8,100</button>
         <button class="pill" type="button" data-sqft="12000">12,000</button>
       </div>
     </div>
     <div class="calc-out">
       <div class="co">
         <span class="co-k">Nitrogen per feeding</span>
-        <span class="co-v"><b id="oN">&mdash;</b> lb actual N</span>
+        <span class="co-v"><b id="oN">8.1</b> lb actual N</span>
         <span class="co-n">At the standard 1.0 lb N per 1,000 sq ft.&#8288;<a class="src" href="#s-cal" title="Northern Utah Turfgrass Management Calendar">[CAL]</a></span>
       </div>
       <div class="co">
         <span class="co-k">Nitrogen per year</span>
-        <span class="co-v"><b id="oNYear">&mdash;</b> lb actual N</span>
+        <span class="co-v"><b id="oNYear">24.3</b> lb actual N</span>
         <span class="co-n">Three feedings, the moderate-use schedule.&#8288;<a class="src" href="#s-fert" title="Lawn Fertilizers for Cool Season Turf">[FERT]</a></span>
       </div>
       <div class="co">
         <span class="co-k">Never exceed, one app</span>
-        <span class="co-v"><b id="oBurn">&mdash;</b> lb actual N</span>
+        <span class="co-v"><b id="oBurn">12.1</b> lb actual N</span>
         <span class="co-n">The burn ceiling, 1.5 lb per 1,000 sq ft.&#8288;<a class="src" href="#s-inorg" title="Selecting and Using Inorganic Fertilizers">[INORG]</a></span>
       </div>
       <div class="co">
         <span class="co-k">Water per 0.5&#8243; cycle</span>
-        <span class="co-v"><b id="oGal">&mdash;</b> gallons</span>
+        <span class="co-v"><b id="oGal">2,524</b> gallons</span>
         <span class="co-n">What one irrigation actually costs you.&#8288;<a class="src src-a" href="#s-adapted" title="Adapted, not sourced">[DERIVED]</a></span>
       </div>
     </div>
@@ -594,13 +597,45 @@ html{scroll-behavior:smooth}
       </ul>
     </div>
     <div>
-      <h3>What the smart controller is and is not good at</h3>
-      <p>A weather-based controller solves the problem this section opened with: it moves the interval for you instead of leaving May&rsquo;s schedule running in July. That is genuinely the hard part, and it is worth having. What it cannot know is how much water your heads actually put down, and that is the number every runtime depends on.</p>
+      <h3>Setting up the Rachio</h3>
+      <p>A weather-based controller solves the problem this section opened with: it moves the interval for you instead of leaving May&rsquo;s schedule running in July. That is genuinely the hard part, and it is worth having. What it cannot know is <b>how much water your heads actually put down</b>, and every runtime it calculates is built on that one number.</p>
+      <p>So the settings below split into two kinds. The ones Rachio can work out for itself, and the two you have to tell it, which are the two that decide whether any of it is right.</p>
+    </div>
+    <div class="note note-stop">
+      <span class="tag">The two settings that matter most</span>
+      <p><b>1. Nozzle inches per hour, per zone.</b> Rachio ships an estimate with each nozzle type.&#8288;<a class="src src-p" href="#s-rachio" title="Rachio product documentation">[RACHIO]</a> An estimate is all it is. Measure your actual rate with catch cups or a USU Water Check&#8288;<a class="src" href="#s-irr" title="Irrigation System Maintenance">[IRR]</a> and type the real number in. Every Flex Daily runtime is derived from it, so if this is off by 40% then so is your watering, all season, invisibly.</p>
+      <p><b>2. Root depth, per zone.</b> Rachio&rsquo;s turf default is shallow, commonly 6 inches.&#8288;<a class="src src-p" href="#s-rachio" title="Rachio product documentation">[RACHIO]</a> That default quietly fights the central argument of this whole page: mowing at 3 inches builds roots deep enough to reach water further down,&#8288;<a class="src" href="#s-basic" title="Basic Turfgrass Care">[BASIC]</a> and a shallow root-depth setting tells Rachio to water little and often instead. Raise it to match the lawn you are actually growing, and the interval stretches on its own.</p>
+    </div>
+    <div>
+      <h4 style="margin-bottom:.6rem">Mapping USU&rsquo;s guidance onto Rachio&rsquo;s switches</h4>
+      <div class="tscroll">
+        <table class="tbl">
+          <thead><tr><th>USU says</th><th>In Rachio</th></tr></thead>
+          <tbody>
+            <tr><td>Adjust the controller seasonally, demand differs by season&#8288;<a class="src" href="#s-irr" title="Irrigation System Maintenance">[IRR]</a>&#8288;<a class="src" href="#s-basic" title="Basic Turfgrass Care">[BASIC]</a></td><td><b>Flex Daily</b> for turf zones. It tracks a soil-moisture balance and picks the days itself, which is the same job the interval table above is doing by hand.&#8288;<a class="src src-p" href="#s-rachio" title="Rachio product documentation">[RACHIO]</a></td></tr>
+            <tr><td>Short repeated cycles, about an hour between, on slopes, clay and sand&#8288;<a class="src" href="#s-basic" title="Basic Turfgrass Care">[BASIC]</a>&#8288;<a class="src" href="#s-irr" title="Irrigation System Maintenance">[IRR]</a></td><td><b>Smart Cycle.</b> Turn it on. It splits the runtime and inserts the soak for you.&#8288;<a class="src src-p" href="#s-rachio" title="Rachio product documentation">[RACHIO]</a></td></tr>
+            <tr><td>Add rain and frost sensors, they are cheap and simple&#8288;<a class="src" href="#s-irr" title="Irrigation System Maintenance">[IRR]</a></td><td><b>Rain Skip</b> and <b>Freeze Skip.</b> You already own these in software, so confirm they are enabled rather than buying hardware.&#8288;<a class="src src-p" href="#s-rachio" title="Rachio product documentation">[RACHIO]</a></td></tr>
+            <tr><td>Irrigate early morning, low wind&#8288;<a class="src" href="#s-basic" title="Basic Turfgrass Care">[BASIC]</a>&#8288;<a class="src" href="#s-cal" title="Northern Utah Turfgrass Management Calendar">[CAL]</a></td><td>Set the schedule to <b>end</b> before 10 AM, not start at 10 AM.&#8288;<a class="src" href="#s-irr" title="Irrigation System Maintenance">[IRR]</a> Rachio reports the end time when you save.&#8288;<a class="src src-p" href="#s-rachio" title="Rachio product documentation">[RACHIO]</a></td></tr>
+            <tr><td>Avoid 10 AM to 6 PM entirely&#8288;<a class="src" href="#s-irr" title="Irrigation System Maintenance">[IRR]</a></td><td>Nothing scheduled in that window, and <b>Wind Skip</b> on for the gusty spring afternoons.&#8288;<a class="src src-p" href="#s-rachio" title="Rachio product documentation">[RACHIO]</a></td></tr>
+            <tr><td>Apply 0.5 to 1 inch per irrigation&#8288;<a class="src" href="#s-basic" title="Basic Turfgrass Care">[BASIC]</a></td><td>A result, not a setting. It falls out of nozzle rate times runtime, which is why the nozzle number has to be real.</td></tr>
+            <tr><td>Set the controller to off for winter&#8288;<a class="src" href="#s-irr" title="Irrigation System Maintenance">[IRR]</a></td><td><b>Standby mode</b>, before the blowout. Otherwise it will happily fire a zone in January.&#8288;<a class="src src-p" href="#s-rachio" title="Rachio product documentation">[RACHIO]</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tscroll-hint">Scroll the table sideways for the rest of the columns &#8594;</p>
+    </div>
+    <div class="note note-sun">
+      <span class="tag">Derived, not sourced</span>
+      <p>USU says nothing about Rachio, and Rachio says nothing about Utah turf. <b>The mapping in that table is this page&rsquo;s work, not either party&rsquo;s recommendation.</b> Feature names come from Rachio and move between app versions, so treat them as a pointer to the right screen rather than an exact label. The USU column is the part that is actually sourced.</p>
+    </div>
+    <div>
+      <h4 style="margin-bottom:.6rem">Then check Rachio&rsquo;s work</h4>
+      <p>Flex Daily is only as good as the zone setup behind it, and a wrong nozzle rate or root depth produces a schedule that looks confident and is wrong. The interval table above is your audit:</p>
       <ul class="ticks">
-        <li><b>Set the seasonal adjustment to work, then verify it against the interval table above.</b> If your controller is watering September on a July cadence, the weather feed is not the problem, the program is.</li>
-        <li><b>Add rain and freeze sensors if the controller does not already have them.</b> USU calls them inexpensive and simple to install, and they shut the system down when rain or frost arrives.&#8288;<a class="src" href="#s-irr" title="Irrigation System Maintenance">[IRR]</a></li>
-        <li><b>Turn on cycle-and-soak</b> for any zone that puddles or runs off. Same principle as splitting a cycle by hand.&#8288;<a class="src" href="#s-basic" title="Basic Turfgrass Care">[BASIC]</a>&#8288;<a class="src" href="#s-irr" title="Irrigation System Maintenance">[IRR]</a></li>
-        <li><b>Cross-check against the state ET guide.</b> Utah&rsquo;s Division of Water Resources publishes a weekly lawn watering recommendation from live weather-station data, and it assumes your system applies half an inch per irrigation.&#8288;<a class="src" href="#s-irr" title="Irrigation System Maintenance">[IRR]</a></li>
+        <li><b>July should land near every 2 days. September near every 6.</b>&#8288;<a class="src" href="#s-cal" title="Northern Utah Turfgrass Management Calendar">[CAL]</a> If Rachio is watering September every two or three days, the weather feed is fine and the zone settings are not.</li>
+        <li><b>Watch for the September trap specifically.</b> This is the month the sources themselves disagree about, and it is the easiest month to keep watering like summer out of habit. Back off hard.</li>
+        <li><b>Compare against the state ET guide</b> for the same week. Utah&rsquo;s Division of Water Resources publishes a weekly recommendation from live station data, assuming half an inch per irrigation.&#8288;<a class="src" href="#s-irr" title="Irrigation System Maintenance">[IRR]</a> Two independent estimates disagreeing is worth investigating.</li>
+        <li><b>Pick a nearby weather station</b> if the default one is far off. A blended forecast from the wrong microclimate is how a valley-floor lawn ends up on a bench schedule.&#8288;<a class="src src-p" href="#s-rachio" title="Rachio product documentation">[RACHIO]</a></li>
       </ul>
       <p class="linkout"><a href="https://conservewater.utah.gov/weekly-lawn-watering-guide/">conservewater.utah.gov/weekly-lawn-watering-guide</a></p>
     </div>
@@ -745,14 +780,14 @@ html{scroll-behavior:smooth}
       <h4 style="margin-bottom:.6rem">One pound of N per 1,000 sq ft, in real bags</h4>
       <div class="tscroll">
         <table class="tbl" id="prodTbl">
-          <thead><tr><th>Product</th><th>Label</th><th>Per 1,000</th><th>Your <span class="live" id="prodArea">5,000</span> sq ft</th></tr></thead>
+          <thead><tr><th>Product</th><th>Label</th><th>Per 1,000</th><th>Your <span class="live" id="prodArea">8,100</span> sq ft</th></tr></thead>
           <tbody>
-            <tr data-pct="21"><td>Ammonium sulfate</td><td class="n">21-0-0</td><td class="n"></td><td class="n"></td></tr>
-            <tr data-pct="46"><td>Urea</td><td class="n">46-0-0</td><td class="n"></td><td class="n"></td></tr>
-            <tr data-pct="29"><td>Lawn fertilizer</td><td class="n">29-3-4</td><td class="n"></td><td class="n"></td></tr>
-            <tr data-pct="25"><td>Lawn food</td><td class="n">25-3-5</td><td class="n"></td><td class="n"></td></tr>
-            <tr data-pct="32"><td>Turf builder</td><td class="n">32-3-2</td><td class="n"></td><td class="n"></td></tr>
-            <tr data-pct="22"><td>Winterizer</td><td class="n">22-4-14</td><td class="n"></td><td class="n"></td></tr>
+            <tr data-pct="21"><td>Ammonium sulfate</td><td class="n">21-0-0</td><td class="n">4.8 lb</td><td class="n"><b>39 lb</b></td></tr>
+            <tr data-pct="46"><td>Urea</td><td class="n">46-0-0</td><td class="n">2.2 lb</td><td class="n"><b>18 lb</b></td></tr>
+            <tr data-pct="29"><td>Lawn fertilizer</td><td class="n">29-3-4</td><td class="n">3.4 lb</td><td class="n"><b>28 lb</b></td></tr>
+            <tr data-pct="25"><td>Lawn food</td><td class="n">25-3-5</td><td class="n">4.0 lb</td><td class="n"><b>32 lb</b></td></tr>
+            <tr data-pct="32"><td>Turf builder</td><td class="n">32-3-2</td><td class="n">3.1 lb</td><td class="n"><b>25 lb</b></td></tr>
+            <tr data-pct="22"><td>Winterizer</td><td class="n">22-4-14</td><td class="n">4.5 lb</td><td class="n"><b>37 lb</b></td></tr>
           </tbody>
         </table>
       </div>
@@ -1250,7 +1285,7 @@ html{scroll-behavior:smooth}
   <div class="sec-head">
     <span class="eyebrow">Provenance</span>
     <h2>Where every number came from</h2>
-    <p>Six documents, all of them Utah State University Extension. Each claim on this page carries the id of the source it came from, and claims that are not from a source are marked differently on purpose.</p>
+    <p>Six Utah State University Extension documents, plus one manufacturer source used only for controller settings. Each claim on this page carries the id of the source it came from, and claims that are not from a source are marked differently on purpose.</p>
   </div>
 
   <div class="panel" style="margin-bottom:1.2rem">
@@ -1259,6 +1294,7 @@ html{scroll-behavior:smooth}
       <div><a class="src" href="#sources">[CAL]</a><span><b>Sourced.</b> Grey, dotted underline. The claim is stated in that document. Click through to it.</span></div>
       <div><a class="src src-a" href="#s-adapted">[DERIVED]</a><span><b>Adapted, not sourced.</b> Amber, solid underline. Arithmetic, an inference, or a reading of a chart that the source does not state outright. Weaker than the grey ones on purpose.</span></div>
       <div><a class="src src-c" href="#sources">[CAL]</a><span><b>Sources disagree.</b> Red, solid underline. Two or more documents give different answers, and the page says which one it follows and why rather than quietly picking.</span></div>
+      <div><a class="src src-p" href="#s-rachio">[RACHIO]</a><span><b>Manufacturer, not extension.</b> Blue, dashed underline. A product feature or default, useful for knowing which switch to flip, but it is the vendor talking and extension guidance outranks it. Only the controller settings use this.</span></div>
     </div>
     <p class="co-n">There are <b>four disagreements</b> on this page: annual nitrogen rate, fertilizer timing, final mowing height, and September water volume. All four are surfaced where they occur.</p>
   </div>
@@ -1307,6 +1343,14 @@ html{scroll-behavior:smooth}
       <p><b>Trust:</b> medium, and the only document here that is not a peer-reviewed fact sheet. It is also the only one with a demonstrable internal error: its September entry calls for 1.5 to 2 inches of water per week, contradicting its own August entry and the calendar sheet. Useful for its finer timing, outranked wherever it conflicts.</p>
       <p class="linkout"><a href="https://extension.usu.edu/yardandgarden/monthly-tips">extension.usu.edu/yardandgarden/monthly-tips</a></p>
     </div>
+    <div class="srcbox" id="s-rachio">
+      <span class="sid">[RACHIO]</span>
+      <h4>Rachio product documentation</h4>
+      <p>Feature names, defaults and behaviour for the Rachio controller: Flex Daily, Smart Cycle, Rain and Freeze and Wind Skip, Standby mode, and the per-zone nozzle rate and root depth settings. Used in one place only, the controller subsection of <a href="#water">Water</a>.</p>
+      <p><b>Trust:</b> lowest of the sources here, and deliberately marked in blue wherever it appears. It is a manufacturer describing its own product, so it is reliable about <i>which switch exists</i> and carries no weight about <i>what a Utah lawn needs</i>. Where the two could conflict, extension wins. Feature names also drift between app versions, so verify against the app rather than trusting this page.</p>
+      <p>Note that Rachio&rsquo;s shipped defaults are not neutral: the nozzle precipitation rates are generic estimates and the turf root depth default is shallower than a lawn mown at 3 inches will actually root. Both are called out in the Water section because both bias the schedule toward watering more often than USU recommends.</p>
+      <p class="linkout"><a href="https://support.rachio.com/">support.rachio.com</a></p>
+    </div>
     <div class="srcbox" id="s-adapted">
       <span class="sid">[DERIVED]</span>
       <h4>Not from a source</h4>
@@ -1317,16 +1361,16 @@ html{scroll-behavior:smooth}
 
   <div class="note note-local" style="margin-top:1.2rem">
     <span class="tag">The precedence rule</span>
-    <p>When documents disagree, this page ranks them: <b>peer-reviewed extension fact sheet beats extension web page beats manufacturer beats forum.</b> Within extension sheets, the more recent and more geographically specific one wins. No manufacturer or forum source is cited anywhere on this page, and no bag label is treated as guidance, because bag labels exist to sell bags. Two commercial lawn-care articles were in the source folder and were deliberately excluded.</p>
+    <p>When documents disagree, this page ranks them: <b>peer-reviewed extension fact sheet beats extension web page beats manufacturer beats forum.</b> Within extension sheets, the more recent and more geographically specific one wins. Exactly one manufacturer source is cited, Rachio, and only for which setting to change rather than what value a lawn needs. No forum source is cited, and no bag label is treated as guidance, because bag labels exist to sell bags. Two commercial lawn-care articles were in the source folder and were deliberately excluded.</p>
   </div>
 </section>
 </main>
 
 <footer class="wrap">
-  <p><b>Sources.</b> Every claim on this page comes from one of six Utah State University Extension documents, listed with links and trust notes in <a href="#sources">Provenance</a>. Five are peer-reviewed fact sheets. The sixth, the monthly checklist, is a web page and is outranked wherever it conflicts with the others.</p>
+  <p><b>Sources.</b> Every claim on this page comes from one of six Utah State University Extension documents, listed with links and trust notes in <a href="#sources">Provenance</a>. Five are peer-reviewed fact sheets. The sixth, the monthly checklist, is a web page and is outranked wherever it conflicts. One manufacturer source, Rachio, is cited in blue for controller settings only and carries the least weight of anything here.</p>
   <p><b>What is not sourced.</b> Amber markers throughout, gathered in one place under <a href="#s-adapted">Not from a source</a>. In short: the catch-cup arithmetic, the gallons conversion, the month boundaries on the year chart, the pre-emergent versus overseeding conflict, and three of the four physical tests in troubleshooting.</p>
   <p><b>Where sources disagree.</b> Four times, and each one is called out where it appears rather than resolved silently: the annual nitrogen rate, the fertilizer calendar, the final mowing height, and September water volume.</p>
-  <p><b>What this page assumes.</b> Kentucky bluegrass, a cool-season lawn, in-ground zones on a weather-based controller, in the Salt Lake Valley. The USU calendar it is built on covers Salt Lake County directly. A 90/10 tall fescue and bluegrass overseed changes none of the dates or rates, because USU treats bluegrass and the fescues as one category throughout.</p>
+  <p><b>What this page assumes.</b> Kentucky bluegrass, a cool-season lawn, roughly 8,100 sq ft on in-ground zones run by a Rachio controller, in the Salt Lake Valley. The USU calendar it is built on covers Salt Lake County directly. A 90/10 tall fescue and bluegrass overseed changes none of the dates or rates, because USU treats bluegrass and the fescues as one category throughout.</p>
   <p>The only dynamic parts are the &ldquo;Right now&rdquo; card, the highlighted rows and the current-month marker, which read the date in your browser, plus the area calculator, which stores your square footage in this browser and nowhere else. No server, no analytics, no cookies.</p>
 </footer>
 
@@ -1359,8 +1403,8 @@ var PHASES=[
 /* ---- per-track schedules, each resolved against today independently ---- */
 /* mow: [height, interval, note] by month */
 var MOW=[
- ['—','Not mowing','Grass is dormant.'],
- ['—','Not mowing','Service the mower this month.'],
+ ['','Not mowing','Grass is dormant.'],
+ ['','Not mowing','Service the mower this month.'],
  ['3″','First mows','Season opens. Sharpen the blade first.'],
  ['3″','Every 5 days','Growth is climbing fast.'],
  ['3″','Every 4 to 5 days','Peak growth. The busiest mowing of the year.'],
@@ -1370,7 +1414,7 @@ var MOW=[
  ['3″','Every 5 to 7 days','Growth picks back up with the cool nights.'],
  ['3″','Every 7 to 10 days','Tapering off toward the final mow.'],
  ['1.5″','Final mow','One low pass only, to limit winter disease.'],
- ['—','Not mowing','Grass is dormant.']
+ ['','Not mowing','Grass is dormant.']
 ];
 /* water: [interval, note] by month. 0.5 to 1 inch per event throughout. */
 var WATER=[
@@ -1454,7 +1498,7 @@ function nextDated(now,rows,n){
 }
 
 /* ---- area ---- */
-var KEY='lawn.sqft', DEF=5000;
+var KEY='lawn.sqft', DEF=8100;
 function area(){
   var v=parseFloat(document.getElementById('sqft').value);
   if(!isFinite(v)||v<=0)return DEF;
@@ -1464,12 +1508,16 @@ function num(v,dp){
   return v.toLocaleString(undefined,{minimumFractionDigits:dp,maximumFractionDigits:dp});
 }
 function lbs(v){return v<10?num(v,1):num(Math.round(v),0);}
+/* the three nitrogen figures sit side by side, so keep their precision uniform */
+function lbN(v){return num(v,1);}
+/* a ceiling must never be displayed higher than it is, so floor rather than round */
+function lbCeil(v){return num(Math.floor(v*10)/10,1);}
 
 function renderArea(){
   var a=area(), per=a/1000;
-  document.getElementById('oN').textContent=lbs(1.0*per);
-  document.getElementById('oNYear').textContent=lbs(3.0*per);
-  document.getElementById('oBurn').textContent=lbs(1.5*per);
+  document.getElementById('oN').textContent=lbN(1.0*per);
+  document.getElementById('oNYear').textContent=lbN(3.0*per);
+  document.getElementById('oBurn').textContent=lbCeil(1.5*per);
   /* 1 inch over 1 sq ft is 0.6233 gallons */
   document.getElementById('oGal').textContent=num(Math.round(0.5*a*0.6233),0);
   document.getElementById('prodArea').textContent=num(a,0);
@@ -1504,7 +1552,7 @@ function render(){
 
   /* four tracks, four independent lookups */
   document.getElementById('trkMow').innerHTML=
-    MOW[m][1]+' at '+MOW[m][0]+'<small>'+MOW[m][2]+'</small>';
+    (MOW[m][0]?MOW[m][1]+' at '+MOW[m][0]:MOW[m][1])+'<small>'+MOW[m][2]+'</small>';
   document.getElementById('trkWater').innerHTML=
     WATER[m][0]+'<small>'+WATER[m][1]+(WATER[m][0].indexOf('Every')===0?' Apply 0.5 to 1″ each time.':'')+'</small>';
 
