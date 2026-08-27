@@ -1,12 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="12" fill="#18211B"/>
-  <g fill="#5C9668">
-    <path d="M13 42q4-22 1-31q8 13 6 31z"/>
-    <path d="M24 42q-4-24 0-33q9 14 7 33z"/>
-    <path d="M35 42q5-21 11-28q-3 15-7 28z"/>
-    <path d="M47 42q-4-19 0-27q8 12 6 27z"/>
+  <!-- Grass blades reuse the hero illustration's curve: both control points at ~0.59H and ~0.54H
+       of blade height. Widened from the hero's slender W/H of 0.11 so the silhouette survives 16px.
+       Everything is clipped to the rounded square so no fill can square off a corner. -->
+  <defs>
+    <clipPath id="lawnClip"><rect width="64" height="64" rx="12"/></clipPath>
+  </defs>
+  <g clip-path="url(#lawnClip)">
+    <rect width="64" height="64" fill="#18211B"/>
+    <g fill="#5C9668">
+      <path d="M6 48q4.4-16.5 4-28q-2.5 14 1.5 28z"/>
+      <path d="M13.8 48q-4.7-21.2-1.5-36q9.2 16.6 7 36z"/>
+      <path d="M21.5 48q4.4-14.8 4-25q-2.5 12.5 1.5 25z"/>
+      <path d="M29.2 48q-4.7-21.2-1.5-36q9.2 16.6 7 36z"/>
+      <path d="M37 48q4.4-16.5 4-28q-2.5 14 1.5 28z"/>
+      <path d="M44.8 48q-4.7-21.2-1.5-36q9.2 16.6 7 36z"/>
+      <path d="M52.5 48q4.4-14.8 4-25q-2.5 12.5 1.5 25z"/>
+    </g>
+    <rect y="44" width="64" height="6" fill="#5C9668"/>
+    <rect y="48" width="64" height="16" fill="#8A7053"/>
+    <rect y="48" width="64" height="3" fill="#000" opacity=".13"/>
   </g>
-  <rect x="6" y="40" width="52" height="8" rx="3" fill="#5C9668"/>
-  <rect x="6" y="46" width="52" height="11" rx="3" fill="#8A7053"/>
-  <rect x="6" y="46" width="52" height="4" fill="#000" opacity=".14"/>
 </svg>
